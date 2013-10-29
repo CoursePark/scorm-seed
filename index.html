@@ -1,0 +1,31 @@
+
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8" />
+	<title><!-- Course Title --></title>
+	
+	<style type="text/css">
+	body {
+		margin: 0;
+		overflow: hidden;
+	}
+	#contentIFrame {
+		position:absolute;
+		left: 0px;
+		width: 100%;
+		top: 0px;
+		height: 100%;
+	}
+	</style>
+</head>
+<body>
+	<iframe id="contentIFrame" src="main.html" frameborder="0"></iframe>
+	<script src="vendor/src/Javascript/SCORM_API_wrapper.js"></script>
+	<script src="shared/BD_Scorm.js"></script>
+	<script>
+		var scorm = BLUEDROP.ScormHelper({
+			debug: false
+		});
+	</script>
+</body>
+</html>
