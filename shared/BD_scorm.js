@@ -23,7 +23,7 @@ var BLUEDROP = BLUEDROP || {};
         scorm = scormWrapper.SCORM;
         
         addEvent(settings.win, 'load', function() {
-            startTimeStamp = new Date();
+            startTimestamp = new Date();
             scormWrapper.SCORM.init();
         });
         addEvent(settings.win, 'unload', function() {
@@ -41,8 +41,8 @@ var BLUEDROP = BLUEDROP || {};
                 'bookmark': 'cmi.core.lesson_location',
                 'score': 'cmi.core.score.raw',
                 'learner': 'cmi.student_name',
-                'sessiontime': 'cmi.core.session_time',
-                'totaltime': 'cmi.core.total_time',
+                'session_time': 'cmi.core.session_time',
+                'total_time': 'cmi.core.total_time',
                 'mode': 'cmi.core.lesson_mode'
             },
             '2004': {
@@ -51,50 +51,53 @@ var BLUEDROP = BLUEDROP || {};
                 'bookmark': 'cmi.location',
                 'score': 'cmi.score.raw',
                 'learner': 'cmi.learner_name',
-                'sessiontime': 'cmi.core.session_time',
-                'totaltime': 'cmi.total_time',
+                'session_time': 'cmi.core.session_time',
+                'total_time': 'cmi.total_time',
                 'mode': 'cmi.mode'
             }
-        }
+        };
         
         function setPassed() {
-            return scorm.set(cmi_elements[scorm.version]['success'], 'passed') && scorm.save();
-        },
+            return scorm.set(cmi_elements[scorm.version].success, 'passed') && scorm.save();
+        }
         function setFailed() {
-            return scorm.set(cmi_elements[scorm.version]['completion'], 'failed') && scorm.save();
-        },
+            return scorm.set(cmi_elements[scorm.version].completion, 'failed') && scorm.save();
+        }
+        function setSessionTime(seconds) {
+            return scorm.set(cmi_elements[scorm.version].completion, ConvertMilliSecondsToSCORMTime(seconds)) && scorm.save();
+        }
         
         return {
             getBookmark: function() {
-                return scorm.get(cmi_elements[scorm.version]['bookmark']);
+                return scorm.get(cmi_elements[scorm.version].bookmark);
             },
             setBookmark: function(bookmark) {
-                return scorm.set(cmi_elements[scorm.version]['bookmark'], bookmark) && scorm.save();
+                return scorm.set(cmi_elements[scorm.version].bookmark, bookmark) && scorm.save();
             },
             isComplete: function() {
-                return scorm.get(cmi_elements[scorm.version]['completion']) == 'completed' ||
-                    scorm.get(cmi_elements[scorm.version]['success']) == 'passed';
+                return scorm.get(cmi_elements[scorm.version].completion) == 'completed' ||
+                    scorm.get(cmi_elements[scorm.version].success) == 'passed';
             },
             getSuccessStatus: function() {
-                var success = scorm.get(cmi_elements[scorm.version]['success']);
+                var success = scorm.get(cmi_elements[scorm.version].success);
                 if (success != 'passed' && success != 'failed') {
                     success = 'unknown';
                 }
                 return success;
-            }
+            },
             setComplete: function() {
-                return scorm.set(cmi_elements[scorm.version]['completion'], 'completed') && scorm.save();
+                return scorm.set(cmi_elements[scorm.version].completion, 'completed') && scorm.save();
             },
             setIncomplete: function() {
-                return scorm.set(cmi_elements[scorm.version]['completion'], 'incomplete') && scorm.save();
+                return scorm.set(cmi_elements[scorm.version].completion, 'incomplete') && scorm.save();
             },
             setPassed: setPassed,
             setFailed: setFailed,
             getScore: function() {
-                return scorm.get(cmi_elements[scorm.version]['score']);
+                return scorm.get(cmi_elements[scorm.version].score);
             },
             setScore: function(score) {
-                scorm.set(cmi_elements[scorm.version]['score'], score);
+                scorm.set(cmi_elements[scorm.version].score, score);
                 
                 if (options.masteryScore) {
                     if (score > options.masteryScore) {
@@ -104,14 +107,12 @@ var BLUEDROP = BLUEDROP || {};
                     }
                 }
             },
-            setSessionTime: function(seconds) {
-                return scorm.set(cmi_elements[scorm.version]['completion'], ConvertMilliSecondsToSCORMTime(seconds)) && scorm.save();
-            }
+            setSessionTime: setSessionTime,
             getTotalTime: function() {
-                return scorm.get(cmi_elements[scorm.version]['total_time']);
+                return scorm.get(cmi_elements[scorm.version].total_time);
             }
-        }
-    }
+        };
+    };
 
     function addEvent(element, event, fn) {
         if (element.addEventListener)
@@ -123,13 +124,13 @@ var BLUEDROP = BLUEDROP || {};
     function ConvertMilliSecondsToSCORMTime(intTotalMilliseconds, blnIncludeFraction){
 
         var intHours;
-        var intintMinutes;
+        var intMinutes;
         var intSeconds;
         var intMilliseconds;
         var intHundredths;
         var strCMITimeSpan;
         
-        if (blnIncludeFraction == null || blnIncludeFraction == undefined){
+        if (blnIncludeFraction === null || blnIncludeFraction === undefined){
             blnIncludeFraction = true;
         }
         
@@ -199,7 +200,7 @@ var BLUEDROP = BLUEDROP || {};
         var intLen;
         var i;
         
-        strTemp = new String(intNum);
+        strTemp = intNum.toString();
         intLen = strTemp.length;
         
         if (intLen > intNumDigits){
