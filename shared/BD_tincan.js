@@ -65,7 +65,10 @@ var BLUEDROP = BLUEDROP || {};
             },
             setComplete: function() {
                 return tc.sendStatement( new TinCan.Statement({
-                    verb: 'completed'
+                    verb: 'completed',
+					result: {
+						success: true
+					}
                 }));
             },
             setIncomplete: function() {
